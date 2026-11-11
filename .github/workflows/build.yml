@@ -1,0 +1,42 @@
+# App Store の評価・スクショ・アイコンと、mozkzki/apps の特商法の表を取り直してページを作り直す。
+# 変わったときだけ main に commit する(GitHub Pages は main をそのまま公開している)。
+name: build
+
+on:
+  schedule:
+    - cron: "0 21 * * *" # 毎日 6:00 JST
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - data/catalog.json
+      - templates/**
+      - scripts/**
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 scripts/build.py
+      - name: 変わっていれば commit
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "変更なし"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "App Store のデータを取り直す"
+          git push
