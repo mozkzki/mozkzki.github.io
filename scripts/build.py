@@ -42,6 +42,24 @@ def get(url):
         return r.read()
 
 
+def strip_exif(jpeg):
+    """JPEG から EXIF(APP1)を抜く。mzstatic は配信のたびに違う ID を EXIF に入れるので、
+    そのまま保存すると中身が同じでも毎回差分が出る。"""
+    if jpeg[:2] != b"\xff\xd8":
+        return jpeg
+    out, i = [jpeg[:2]], 2
+    while i + 4 <= len(jpeg) and jpeg[i] == 0xFF:
+        marker = jpeg[i + 1]
+        if marker == 0xDA:  # SOS 以降は画像データ
+            break
+        end = i + 2 + int.from_bytes(jpeg[i + 2:i + 4], "big")
+        if marker != 0xE1:
+            out.append(jpeg[i:end])
+        i = end
+    out.append(jpeg[i:])
+    return b"".join(out)
+
+
 def resized(url, size):
     # mzstatic の URL は末尾の "<w>x<h>bb.<ext>" を差し替えると別サイズが返る
     return re.sub(r"/[^/]+$", "/" + size, url)
@@ -82,7 +100,7 @@ def fetch(catalog):
         if r is None:
             sys.exit(f"lookup に無い: {entry['id']} {entry['name']}")
         icon = f"assets/icons/{entry['id']}.jpg"
-        (ROOT / icon).write_bytes(get(resized(r["artworkUrl512"], ICON_SIZE)))
+        (ROOT / icon).write_bytes(strip_exif(get(resized(r["artworkUrl512"], ICON_SIZE))))
 
         shots = []
         if entry.get("featured"):
@@ -96,7 +114,7 @@ def fetch(catalog):
                 height = round(SHOT_WIDTH * h / w)
                 url = template.format(w=SHOT_WIDTH, h=height, c="bb", f="jpg")
                 path = f"assets/screenshots/{entry['id']}-{i}.jpg"
-                (ROOT / path).write_bytes(get(url))
+                (ROOT / path).write_bytes(strip_exif(get(url)))
                 shots.append({"src": path, "width": SHOT_WIDTH, "height": height})
 
         apps.append({
