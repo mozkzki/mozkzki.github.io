@@ -31,8 +31,8 @@
         "height": 848
       }
     ],
-    "averageUserRating": 4.35831,
-    "userRatingCount": 1281,
+    "averageUserRating": 4.35803,
+    "userRatingCount": 1282,
     "version": "4.7.33",
     "currentVersionReleaseDate": "2026-11-04T15:10:30Z"
   },
@@ -215,5 +215,20 @@
     "userRatingCount": 0,
     "version": "1.0.2",
     "currentVersionReleaseDate": "2025-12-02T02:05:21Z"
+  },
+  {
+    "id": 6826596813,
+    "name": "お酌検定",
+    "category": "neta",
+    "folder": "oshaku_kentei",
+    "trackName": "お酌検定",
+    "subtitle": "",
+    "url": "https://apps.apple.com/jp/app/id6826596813",
+    "icon": "assets/icons/6826596813.jpg",
+    "screenshots": [],
+    "averageUserRating": 0,
+    "userRatingCount": 0,
+    "version": "1.0.0",
+    "currentVersionReleaseDate": "2026-11-20T08:00:00Z"
   }
 ]
