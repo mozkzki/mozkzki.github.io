@@ -209,40 +209,36 @@ def render_tokushoho(entries):
 
 def render(catalog, apps):
     e = html.escape
-    filters = "\n".join(
-        f'      <button type="button" data-filter="{c["key"]}" aria-pressed="false">{e(c["label"])}</button>'
-        for c in catalog["categories"]
-    )
-
     featured = []
     for a in (a for a in apps if a.get("featured")):
-        shots = "".join(f'<img src="{s["src"]}" alt="" width="{s["width"] // 2}" height="{s["height"] // 2}" loading="lazy">' for s in a["screenshots"])
+        # 最初から見える位置なので、遅延読み込みにしない
+        shots = "".join(f'<img src="{s["src"]}" alt="" width="{s["width"] // 2}" height="{s["height"] // 2}">' for s in a["screenshots"])
         rating = ""
         if a["userRatingCount"]:
             rating = (f'<p class="rating"><span aria-hidden="true">★</span> {a["averageUserRating"]:.1f}'
                       f' <span class="count">({a["userRatingCount"]:,}件)</span></p>')
-        featured.append(f'''    <a class="featured" href="{a["url"]}" data-category="{a["category"]}">
-      <div class="head">
-        <img class="icon" src="{a["icon"]}" alt="" width="112" height="112">
+        # スクショの列は横に送れるので、リンクに含めない(送るつもりで App Store に飛ばないように)
+        featured.append(f'''    <article class="featured">
+      <a class="head" href="{a["url"]}">
+        <img class="icon" src="{a["icon"]}" alt="" width="96" height="96">
         <div>
           <h2>{e(a["name"])}</h2>
           <p class="sub">{e(a["subtitle"])}</p>
           {rating}
         </div>
-      </div>
+      </a>
       <div class="shots">{shots}</div>
-    </a>''')
+    </article>''')
 
     items = []
     for a in (a for a in apps if not a.get("featured")):
         sub = f'<span class="sub">{e(a["subtitle"])}</span>' if a["subtitle"] else ""
-        items.append(f'''      <li data-category="{a["category"]}"><a href="{a["url"]}">
+        items.append(f'''      <li><a href="{a["url"]}">
         <img class="icon" src="{a["icon"]}" alt="" width="64" height="64" loading="lazy">
         <span><span class="name">{e(a["name"])}</span>{sub}</span>
       </a></li>''')
 
     page = Template(TEMPLATE.read_text()).substitute(
-        filters=filters,
         featured="\n".join(featured),
         items="\n".join(items),
     )

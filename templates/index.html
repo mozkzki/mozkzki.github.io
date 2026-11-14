@@ -10,9 +10,6 @@
 <body>
 <main>
   <h1>mozksoft</h1>
-  <nav>
-$filters
-  </nav>
 $featured
   <ul>
 $items
@@ -23,15 +20,5 @@ $items
     <small>© mozksoft</small>
   </footer>
 </main>
-<script>
-  // 押したボタンの分類だけ残す。もう一度押すと全部に戻る
-  const buttons = document.querySelectorAll("nav button");
-  const cards = document.querySelectorAll("[data-category]");
-  buttons.forEach(b => b.addEventListener("click", () => {
-    const on = b.getAttribute("aria-pressed") !== "true";
-    buttons.forEach(x => x.setAttribute("aria-pressed", String(x === b && on)));
-    cards.forEach(c => { c.hidden = on && c.dataset.category !== b.dataset.filter; });
-  }));
-</script>
 </body>
 </html>

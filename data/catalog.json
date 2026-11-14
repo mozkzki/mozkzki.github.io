@@ -1,13 +1,8 @@
 {
-  "categories": [
-    { "key": "game", "label": "ゲーム" },
-    { "key": "tool", "label": "ツール" },
-    { "key": "neta", "label": "ネタ" }
-  ],
   "apps": [
     { "id": 6449006748, "name": "イントロ王", "category": "game", "folder": "introquiz", "featured": true },
     { "id": 6733220144, "name": "AI画像で曲当て!", "category": "game", "folder": "aigazoukyokuate" },
-    { "id": 6762098116, "name": "DEAD LINK", "category": "game", "folder": "deadlink" },
+    { "id": 6762098116, "name": "DEAD LINK", "category": "game", "folder": "deadlink", "subtitle": "ネスケ風レトロブラウザで挑む謎解き" },
     { "id": 6446875976, "name": "即メモ", "category": "tool", "folder": "tegakimemo" },
     { "id": 6447434217, "name": "声で即メモ", "category": "tool", "folder": "koe_memo" },
     { "id": 6761325443, "name": "Dayrec", "category": "tool", "folder": "dayrec" },
@@ -16,8 +11,8 @@
     { "id": 6759508642, "name": "Pacemate", "category": "tool", "folder": "pacemate" },
     { "id": 6445834909, "name": "ぬりえメーカー", "category": "tool", "folder": "nurie_maker" },
     { "id": 6746083791, "name": "まあいっか神託", "category": "neta", "folder": "yaruyaragod" },
-    { "id": 6745361366, "name": "幻影の副題収集機", "category": "neta", "folder": "subtitle_maker", "subtitle": "" },
-    { "id": 6746286624, "name": "異世界転生カメラ", "category": "neta", "folder": "isekai" },
-    { "id": 6826596813, "name": "お酌検定", "category": "neta", "folder": "oshaku_kentei" }
+    { "id": 6745361366, "name": "幻影の副題収集機", "category": "neta", "folder": "subtitle_maker", "subtitle": "名探偵映画っぽい副題を自動生成" },
+    { "id": 6746286624, "name": "異世界転生カメラ", "category": "neta", "folder": "isekai", "subtitle": "自撮りから異世界キャラに転生！" },
+    { "id": 6826596813, "name": "お酌検定", "category": "neta", "folder": "oshaku_kentei", "subtitle": "七分のビール、三分の泡を極めよ" }
   ]
 }
