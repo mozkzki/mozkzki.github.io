@@ -143,7 +143,8 @@ def fetch(catalog):
         apps.append({
             **entry,
             "trackName": r["trackName"],
-            "subtitle": subtitle(r["trackName"], entry["name"]),
+            # catalog に subtitle を書いたアプリは、それを使う(空にすると出さない)
+            "subtitle": entry["subtitle"] if "subtitle" in entry else subtitle(r["trackName"], entry["name"]),
             "url": f"https://apps.apple.com/jp/app/id{entry['id']}",
             "icon": icon,
             "screenshots": shots,
