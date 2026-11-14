@@ -12,6 +12,8 @@ import html
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.request
 from pathlib import Path
 from string import Template
@@ -36,10 +38,17 @@ POLICY = "https://raw.githubusercontent.com/mozkzki/apps/main/{folder}/privacy_p
 TOKUSHOHO_HEADING = "## 特定商取引法に基づく表記"
 
 
-def get(url):
+def get(url, tries=3):
     req = urllib.request.Request(url, headers={"User-Agent": "mozksoft-site-build"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
+    for attempt in range(tries):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read()
+        except (urllib.error.URLError, TimeoutError):
+            # 429 やタイムアウトは少し待てば通ることが多い
+            if attempt == tries - 1:
+                raise
+            time.sleep(10 * (attempt + 1))
 
 
 def strip_exif(jpeg):
@@ -71,7 +80,11 @@ def store_screenshots(app_id):
     Lookup API の screenshotUrls は 5.5 インチ用の組しか返さず、新しい 6.5 / 6.9 インチ用の組が
     取れないので、ページに埋め込まれたデータから取る。
     """
-    page = get(STORE_PAGE.format(id=app_id)).decode()
+    try:
+        page = get(STORE_PAGE.format(id=app_id)).decode()
+    except (urllib.error.URLError, TimeoutError) as err:
+        print(f"  App Store のページが取れない({err}): {app_id}")
+        return []
     found = re.findall(r'"screenshot":\{[^{}]*?"template":"([^"]+)","width":(\d+),"height":(\d+)', page)
     shots = []
     for template, w, h in found:
@@ -94,6 +107,7 @@ def fetch(catalog):
     ICON_DIR.mkdir(parents=True, exist_ok=True)
     SHOT_DIR.mkdir(parents=True, exist_ok=True)
 
+    previous = {a["id"]: a for a in json.loads(APPS_JSON.read_text())} if APPS_JSON.exists() else {}
     apps = []
     for entry in catalog["apps"]:
         r = results.get(entry["id"])
@@ -104,18 +118,27 @@ def fetch(catalog):
 
         shots = []
         if entry.get("featured"):
-            for f in SHOT_DIR.glob(f"{entry['id']}-*.jpg"):
-                f.unlink()
-            # Web ページから取れなければ、Lookup API の(古い)組に戻す
-            sources = store_screenshots(entry["id"]) or [
-                (re.sub(r"/[^/]+$", "/{w}x{h}{c}.{f}", u), 1242, 2208) for u in r["screenshotUrls"]
-            ]
-            for i, (template, w, h) in enumerate(sources[:FEATURED_SHOTS]):
-                height = round(SHOT_WIDTH * h / w)
-                url = template.format(w=SHOT_WIDTH, h=height, c="bb", f="jpg")
-                path = f"assets/screenshots/{entry['id']}-{i}.jpg"
-                (ROOT / path).write_bytes(strip_exif(get(url)))
-                shots.append({"src": path, "width": SHOT_WIDTH, "height": height})
+            sources = store_screenshots(entry["id"])
+            kept = previous.get(entry["id"], {}).get("screenshots")
+            if not sources and kept:
+                # Web ページが取れない日は、前回のスクショをそのまま使う
+                shots = kept
+            else:
+                # 前回分も無ければ、Lookup API の(古い)組を使う
+                sources = sources or [
+                    (re.sub(r"/[^/]+$", "/{w}x{h}{c}.{f}", u), 1242, 2208) for u in r["screenshotUrls"]
+                ]
+                images = []
+                for i, (template, w, h) in enumerate(sources[:FEATURED_SHOTS]):
+                    height = round(SHOT_WIDTH * h / w)
+                    url = template.format(w=SHOT_WIDTH, h=height, c="bb", f="jpg")
+                    images.append((f"assets/screenshots/{entry['id']}-{i}.jpg", strip_exif(get(url))))
+                    shots.append({"src": images[-1][0], "width": SHOT_WIDTH, "height": height})
+                # 全部取れてから、前回の画像と入れ替える
+                for f in SHOT_DIR.glob(f"{entry['id']}-*.jpg"):
+                    f.unlink()
+                for path, data in images:
+                    (ROOT / path).write_bytes(data)
 
         apps.append({
             **entry,
