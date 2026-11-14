@@ -17,6 +17,7 @@
     { "id": 6445834909, "name": "ぬりえメーカー", "category": "tool", "folder": "nurie_maker" },
     { "id": 6746083791, "name": "まあいっか神託", "category": "neta", "folder": "yaruyaragod" },
     { "id": 6745361366, "name": "幻影の副題収集機", "category": "neta", "folder": "subtitle_maker" },
-    { "id": 6746286624, "name": "異世界転生カメラ", "category": "neta", "folder": "isekai" }
+    { "id": 6746286624, "name": "異世界転生カメラ", "category": "neta", "folder": "isekai" },
+    { "id": 6826596813, "name": "お酌検定", "category": "neta", "folder": "oshaku_kentei" }
   ]
 }
