@@ -20,6 +20,10 @@ main { max-width: 960px; margin: 0 auto; padding: 48px 16px 48px; }
 a { color: inherit; text-decoration: none; }
 h1 { font-size: 1.375rem; letter-spacing: -0.02em; margin: 0 0 20px; }
 /* 暗い色・白いアイコンが背景に溶けないよう、両方のモードで 1px の縁を付ける */
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand .mark { width: 28px; height: 28px; display: block; flex: none; }
+/* 線の端を含めた z の高さを、太字の小文字の高さ(約 0.53em)に揃える */
+.brand .z { width: .56em; height: .69em; display: inline-block; vertical-align: -.07em; }
 .icon { border-radius: 22.5%; display: block; flex: none; box-shadow: 0 0 0 1px var(--icon-edge); }
 .sub { text-wrap: balance; }
 
@@ -55,6 +59,7 @@ footer small { margin-left: auto; font-size: inherit; }
 @media (max-width: 600px) {
   main { padding-top: 24px; }
   h1 { font-size: 1.25rem; margin-bottom: 16px; }
+  .brand .mark { width: 26px; height: 26px; }
   .featured { padding: 16px; border-radius: 22px; margin-bottom: 16px; }
   .featured .head { gap: 14px; }
   .featured .head .icon { width: 64px; height: 64px; }
