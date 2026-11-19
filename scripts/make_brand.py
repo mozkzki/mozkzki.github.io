@@ -93,6 +93,23 @@ def og_page():
 </body></html>'''
 
 
+def x_header_page():
+    # X のヘッダー(1500×500)。左下(横 0〜490・縦 320〜)はプロフィールのアイコンが重なるので、
+    # 上の段は長く、下の段は短くして右へ揃え、アイコンを大きく取る
+    apps = json.loads((ROOT / "data" / "apps.json").read_text())
+    imgs = [f'<img src="data:image/jpeg;base64,{base64.b64encode((ROOT / a["icon"]).read_bytes()).decode()}">'
+            for a in apps]
+    top = (len(imgs) + 3) // 2
+    rows = "".join(f'<div class="row">{"".join(r)}</div>' for r in (imgs[:top], imgs[top:]))
+    return f'''<!doctype html><html><head><meta charset="utf-8"><style>
+  body {{ margin: 0; width: 1500px; height: 500px; background: {DARK_BG}; position: relative; }}
+  .icons {{ position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: flex-end; gap: 24px; }}
+  .row {{ display: flex; gap: 22px; }}
+  .icons img {{ width: 140px; height: 140px; border-radius: 22.5%; box-shadow: 0 0 0 1px rgba(255,255,255,.16); display: block; }}
+</style></head><body><div class="icons">{rows}</div></body></html>'''
+
+
 def main():
     (ROOT / "favicon.svg").write_text(favicon_svg())
 
@@ -109,7 +126,15 @@ def main():
     og.save(buf, "PNG", optimize=True)
     (ROOT / "assets" / "og.png").write_bytes(buf.getvalue())
 
-    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "assets/og.png"):
+    # X(@mozksoft)のプロフィール。アイコンは X が丸く切り抜くので四角いまま塗りつぶす。サイトには載せない
+    (ROOT / "assets" / "x").mkdir(exist_ok=True)
+    # 印の m は四角の中で下寄り(縦 36〜79)なので、丸に入れるときは上下の中央へ上げる
+    avatar = (f'<rect width="100" height="100" fill="{PAPER}"/><g transform="translate(0 -7.5)">'
+              f'<path d="{M_PATH}" fill="none" stroke="{DARK_BG}" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/></g>')
+    render(svg_page(avatar, 400), 400, 400).convert("RGB").save(ROOT / "assets/x/avatar.png")
+    render(x_header_page(), 1500, 500).convert("RGB").save(ROOT / "assets/x/header.png", optimize=True)
+
+    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "assets/og.png", "assets/x/avatar.png", "assets/x/header.png"):
         print(f"wrote {f} ({(ROOT / f).stat().st_size:,} bytes)")
 
 
