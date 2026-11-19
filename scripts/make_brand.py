@@ -110,6 +110,23 @@ def x_header_page():
 </style></head><body><div class="icons">{rows}</div></body></html>'''
 
 
+def form_header_page():
+    # Google フォームのヘッダー(1600×400)。フォームの幅に縮んで出るので、印とロゴだけを大きめに中央へ
+    return f'''<!doctype html><html><head><meta charset="utf-8"><style>
+  body {{ margin: 0; width: 1600px; height: 400px; background: {DARK_BG}; color: {PAPER};
+         display: grid; place-content: center;
+         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }}
+  .lock {{ display: flex; align-items: center; gap: 36px; font-size: 120px; font-weight: 800; letter-spacing: -0.02em; line-height: 1; }}
+  .lock svg.mark {{ width: 148px; height: 148px; display: block; }}
+  .z {{ width: .56em; height: .69em; vertical-align: -.07em; }}
+</style></head><body>
+  <div class="lock">
+    <svg class="mark" viewBox="0 0 100 100">{mark(PAPER, DARK_BG)}</svg>
+    <span>mo<svg class="z" viewBox="0 0 60 70"><path d="{Z_PATH}" fill="none" stroke="{PAPER}" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/></svg>ksoft</span>
+  </div>
+</body></html>'''
+
+
 def main():
     (ROOT / "favicon.svg").write_text(favicon_svg())
 
@@ -134,7 +151,11 @@ def main():
     render(svg_page(avatar, 400), 400, 400).convert("RGB").save(ROOT / "assets/x/avatar.png")
     render(x_header_page(), 1500, 500).convert("RGB").save(ROOT / "assets/x/header.png", optimize=True)
 
-    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "assets/og.png", "assets/x/avatar.png", "assets/x/header.png"):
+    # お問い合わせの Google フォームのヘッダー。サイトには載せない
+    (ROOT / "assets" / "form").mkdir(exist_ok=True)
+    render(form_header_page(), 1600, 400).convert("RGB").save(ROOT / "assets/form/header.png", optimize=True)
+
+    for f in ("favicon.svg", "favicon.ico", "apple-touch-icon.png", "assets/og.png", "assets/x/avatar.png", "assets/x/header.png", "assets/form/header.png"):
         print(f"wrote {f} ({(ROOT / f).stat().st_size:,} bytes)")
 
 
