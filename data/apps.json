@@ -31,10 +31,28 @@
         "height": 848
       }
     ],
-    "averageUserRating": 4.35389,
-    "userRatingCount": 1297,
+    "averageUserRating": 4.35412,
+    "userRatingCount": 1299,
     "version": "4.7.33",
-    "currentVersionReleaseDate": "2026-11-04T15:10:30Z"
+    "currentVersionReleaseDate": "2026-11-04T15:10:30Z",
+    "releaseDate": "2023-05-12T07:00:00Z"
+  },
+  {
+    "id": 6833961117,
+    "name": "へんつく",
+    "category": "game",
+    "folder": "hentsuku",
+    "web": "https://hentsuku.pages.dev/",
+    "trackName": "へんつく - へんとつくりで漢字を全部消すパズル",
+    "subtitle": "へんとつくりで漢字を全部消すパズル",
+    "url": "https://apps.apple.com/jp/app/id6833961117",
+    "icon": "assets/icons/6833961117.jpg",
+    "screenshots": [],
+    "averageUserRating": 0,
+    "userRatingCount": 0,
+    "version": "1.0.0",
+    "currentVersionReleaseDate": "2026-12-01T08:00:00Z",
+    "releaseDate": "2026-12-01T08:00:00Z"
   },
   {
     "id": 6733220144,
@@ -49,7 +67,8 @@
     "averageUserRating": 4.10526,
     "userRatingCount": 19,
     "version": "1.1.7",
-    "currentVersionReleaseDate": "2026-10-22T15:46:13Z"
+    "currentVersionReleaseDate": "2026-10-22T15:46:13Z",
+    "releaseDate": "2024-10-14T07:00:00Z"
   },
   {
     "id": 6762098116,
@@ -64,7 +83,8 @@
     "averageUserRating": 5,
     "userRatingCount": 2,
     "version": "1.0.1",
-    "currentVersionReleaseDate": "2026-05-02T18:56:33Z"
+    "currentVersionReleaseDate": "2026-05-02T18:56:33Z",
+    "releaseDate": "2026-05-01T07:00:00Z"
   },
   {
     "id": 6446875976,
@@ -79,7 +99,8 @@
     "averageUserRating": 4.3125,
     "userRatingCount": 16,
     "version": "1.3.0",
-    "currentVersionReleaseDate": "2026-11-11T01:48:59Z"
+    "currentVersionReleaseDate": "2026-11-11T01:48:59Z",
+    "releaseDate": "2023-03-31T07:00:00Z"
   },
   {
     "id": 6447434217,
@@ -94,7 +115,8 @@
     "averageUserRating": 4.46154,
     "userRatingCount": 13,
     "version": "1.3.0",
-    "currentVersionReleaseDate": "2026-11-01T20:50:26Z"
+    "currentVersionReleaseDate": "2026-11-01T20:50:26Z",
+    "releaseDate": "2023-04-12T07:00:00Z"
   },
   {
     "id": 6761325443,
@@ -109,7 +131,8 @@
     "averageUserRating": 5,
     "userRatingCount": 4,
     "version": "1.1.0",
-    "currentVersionReleaseDate": "2026-11-07T19:47:35Z"
+    "currentVersionReleaseDate": "2026-11-07T19:47:35Z",
+    "releaseDate": "2026-04-10T07:00:00Z"
   },
   {
     "id": 6470959008,
@@ -124,7 +147,8 @@
     "averageUserRating": 4,
     "userRatingCount": 5,
     "version": "1.0.2",
-    "currentVersionReleaseDate": "2025-12-03T23:06:39Z"
+    "currentVersionReleaseDate": "2025-12-03T23:06:39Z",
+    "releaseDate": "2023-11-13T08:00:00Z"
   },
   {
     "id": 6760647551,
@@ -139,7 +163,8 @@
     "averageUserRating": 5,
     "userRatingCount": 1,
     "version": "1.3.0",
-    "currentVersionReleaseDate": "2026-11-14T20:41:18Z"
+    "currentVersionReleaseDate": "2026-11-14T20:41:18Z",
+    "releaseDate": "2026-03-24T07:00:00Z"
   },
   {
     "id": 6759508642,
@@ -154,7 +179,8 @@
     "averageUserRating": 4.28571,
     "userRatingCount": 7,
     "version": "1.3.2",
-    "currentVersionReleaseDate": "2026-10-26T21:56:15Z"
+    "currentVersionReleaseDate": "2026-10-26T21:56:15Z",
+    "releaseDate": "2026-02-26T08:00:00Z"
   },
   {
     "id": 6445834909,
@@ -169,7 +195,8 @@
     "averageUserRating": 3.08333,
     "userRatingCount": 12,
     "version": "1.0.4",
-    "currentVersionReleaseDate": "2025-12-12T21:16:47Z"
+    "currentVersionReleaseDate": "2025-12-12T21:16:47Z",
+    "releaseDate": "2023-02-27T08:00:00Z"
   },
   {
     "id": 6746083791,
@@ -184,7 +211,8 @@
     "averageUserRating": 0,
     "userRatingCount": 0,
     "version": "1.0.2",
-    "currentVersionReleaseDate": "2025-12-02T02:57:43Z"
+    "currentVersionReleaseDate": "2025-12-02T02:57:43Z",
+    "releaseDate": "2025-05-23T07:00:00Z"
   },
   {
     "id": 6745361366,
@@ -199,7 +227,8 @@
     "averageUserRating": 0,
     "userRatingCount": 0,
     "version": "1.0.2",
-    "currentVersionReleaseDate": "2025-12-02T17:22:03Z"
+    "currentVersionReleaseDate": "2025-12-02T17:22:03Z",
+    "releaseDate": "2025-05-04T07:00:00Z"
   },
   {
     "id": 6746286624,
@@ -214,7 +243,8 @@
     "averageUserRating": 0,
     "userRatingCount": 0,
     "version": "1.0.2",
-    "currentVersionReleaseDate": "2025-12-02T02:05:21Z"
+    "currentVersionReleaseDate": "2025-12-02T02:05:21Z",
+    "releaseDate": "2025-07-01T07:00:00Z"
   },
   {
     "id": 6826596813,
@@ -229,6 +259,7 @@
     "averageUserRating": 0,
     "userRatingCount": 0,
     "version": "1.0.0",
-    "currentVersionReleaseDate": "2026-11-15T08:00:00Z"
+    "currentVersionReleaseDate": "2026-11-15T08:00:00Z",
+    "releaseDate": "2026-11-15T08:00:00Z"
   }
 ]
