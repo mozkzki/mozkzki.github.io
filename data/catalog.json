@@ -1,6 +1,7 @@
 {
   "apps": [
     { "id": 6449006748, "name": "イントロ王", "category": "game", "folder": "introquiz", "featured": true },
+    { "id": 6833961117, "name": "へんつく", "category": "game", "folder": "hentsuku", "web": "https://hentsuku.pages.dev/" },
     { "id": 6733220144, "name": "AI画像で曲当て!", "category": "game", "folder": "aigazoukyokuate" },
     { "id": 6762098116, "name": "DEAD LINK", "category": "game", "folder": "deadlink", "subtitle": "ネスケ風レトロブラウザで挑む謎解き" },
     { "id": 6446875976, "name": "即メモ", "category": "tool", "folder": "tegakimemo" },

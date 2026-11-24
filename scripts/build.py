@@ -6,8 +6,12 @@
 
 掲載するアプリと分類は data/catalog.json で手で持つ。
 評価・バージョン・アイコン・スクショは API から取るので、手で書かない。
+lookup にまだ無いアプリ(予約注文の間など)は飛ばす。毎日の Actions で、出てきた日に自動で載る。
+配信開始から NEW_DAYS 日以内のアプリには「新作」の印を出す(releaseDate から。手で付け外ししない)。
+catalog に web を書いたアプリは、行の右に「Web版」のリンクを出す。
 特定商取引法に基づく表記は、mozkzki/apps の各アプリのプライバシーポリシーにある表を集めて作る。
 """
+import datetime
 import html
 import json
 import re
@@ -34,6 +38,7 @@ ICON_SIZE = "256x256bb.jpg"
 STORE_PAGE = "https://apps.apple.com/jp/app/id{id}"
 SHOT_WIDTH = 392
 FEATURED_SHOTS = 4
+NEW_DAYS = 60
 POLICY = "https://raw.githubusercontent.com/mozkzki/apps/main/{folder}/privacy_policy/japanese.md"
 TOKUSHOHO_HEADING = "## 特定商取引法に基づく表記"
 
@@ -112,7 +117,8 @@ def fetch(catalog):
     for entry in catalog["apps"]:
         r = results.get(entry["id"])
         if r is None:
-            sys.exit(f"lookup に無い: {entry['id']} {entry['name']}")
+            print(f"  lookup にまだ無いので飛ばす: {entry['id']} {entry['name']}")
+            continue
         icon = f"assets/icons/{entry['id']}.jpg"
         (ROOT / icon).write_bytes(strip_exif(get(resized(r["artworkUrl512"], ICON_SIZE))))
 
@@ -152,6 +158,7 @@ def fetch(catalog):
             "userRatingCount": r.get("userRatingCount", 0),
             "version": r["version"],
             "currentVersionReleaseDate": r["currentVersionReleaseDate"],
+            "releaseDate": r.get("releaseDate", ""),
         })
         print(f"  {entry['name']}: v{r['version']}")
 
@@ -173,9 +180,10 @@ def tokushoho_rows(markdown):
     return rows
 
 
-def fetch_tokushoho(catalog):
+def fetch_tokushoho(catalog, apps):
     found = []
-    for entry in catalog["apps"]:
+    listed = {a["id"] for a in apps}   # アイコンを取れたアプリだけ(lookup にまだ無いアプリは載せない)
+    for entry in (e for e in catalog["apps"] if e["id"] in listed):
         rows = tokushoho_rows(get(POLICY.format(folder=entry["folder"])).decode())
         if rows:
             found.append({"id": entry["id"], "name": entry["name"], "rows": rows})
@@ -207,6 +215,14 @@ def render_tokushoho(entries):
     ))
 
 
+def is_new(app, today=None):
+    """配信開始(予約注文なら配信予定日)から NEW_DAYS 日以内か"""
+    if not app.get("releaseDate"):
+        return False
+    released = datetime.date.fromisoformat(app["releaseDate"][:10])
+    return (today or datetime.date.today()) - released <= datetime.timedelta(days=NEW_DAYS)
+
+
 def render(catalog, apps):
     e = html.escape
     featured = []
@@ -233,10 +249,13 @@ def render(catalog, apps):
     items = []
     for a in (a for a in apps if not a.get("featured")):
         sub = f'<span class="sub">{e(a["subtitle"])}</span>' if a["subtitle"] else ""
+        new = '<span class="new">新作</span>' if is_new(a) else ""
+        # 入れ子の a は作れないので、Web版のリンクは行のリンクの外(右)に並べる
+        web = f'\n        <a class="web" href="{a["web"]}">Web版</a>' if a.get("web") else ""
         items.append(f'''      <li><a href="{a["url"]}">
         <img class="icon" src="{a["icon"]}" alt="" width="64" height="64" loading="lazy">
-        <span><span class="name">{e(a["name"])}</span>{sub}</span>
-      </a></li>''')
+        <span><span class="name">{e(a["name"])}{new}</span>{sub}</span>
+      </a>{web}</li>''')
 
     page = Template(TEMPLATE.read_text()).substitute(
         featured="\n".join(featured),
@@ -252,7 +271,7 @@ def main():
         tokushoho = json.loads(TOKUSHOHO_JSON.read_text())
     else:
         apps = fetch(catalog)
-        tokushoho = fetch_tokushoho(catalog)
+        tokushoho = fetch_tokushoho(catalog, apps)
     render(catalog, apps)
     render_tokushoho(tokushoho)
     print(f"wrote {OUT.relative_to(ROOT)}, {TOKUSHOHO_OUT.relative_to(ROOT)}")
